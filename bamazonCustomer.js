@@ -54,19 +54,39 @@ function checkQuantity(){
 	
 			console.log(res);
 		
-			for (let i = 0; i < res.length; i++){
-				var product = res[i];
-				console.log(product);
-				console.log(product.product_name)
-			}
-		}
-	)
+				for (let i = 0; i < res.length; i++){
+						var product = res[i];
+						console.log(product);
+						console.log("Quantity: " + product.stock_quantity);
+						var left=product.stock_quantity;
+						console.log(left);
+						
+					}
+					
+				if (left >= inputQuantity){
+					console.log("You're in luck! We have enough for you!");
+					var updatedQuantity = left-inputQuantity;
+					console.log("Updated Quantity: " + updatedQuantity);
+					
+					var query=connection.query(
+						"UPDATE products SET ? WHERE ?", [{
+						stock_quantity: updatedQuantity
+						},{
+						item_id: inputID
+					}],
+					function(err, res){
+						
+						console.log(res.affectedRows + "quantities updated!\n");
+					}
+					)
+					
+
+				}else{
+					console.log("Unfortunately we only have " + product.stock_quantity + " left.")
+					}		
+		})
 }
-
 		
-
-
-
 checkQuantity();
 
 });

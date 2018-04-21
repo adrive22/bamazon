@@ -43,8 +43,8 @@ inquirer.prompt([
 ]).then(function(inquirerResponse){
 	var inputID = inquirerResponse.whatProduct
 	var inputQuantity = inquirerResponse.howMany
-	console.log(inputID);
-	console.log(inputQuantity);
+	
+	
 
 function checkQuantity(){
 	connection.query("SELECT * FROM products WHERE item_id=?", [inputID], 
@@ -52,21 +52,21 @@ function checkQuantity(){
 			if (err)
 				return console.log(err);
 	
-			console.log(res);
+			
 		
 				for (let i = 0; i < res.length; i++){
 						var product = res[i];
-						console.log(product);
-						console.log("Quantity: " + product.stock_quantity);
+						console.log("It looks like you want to buy " + inputQuantity + " " + product.product_name);
+						
 						var left=product.stock_quantity;
-						console.log(left);
+						
 						
 					}
 					
 				if (left >= inputQuantity){
 					console.log("You're in luck! We have enough for you!");
 					var updatedQuantity = left-inputQuantity;
-					console.log("Updated Quantity: " + updatedQuantity);
+					
 					
 					var query=connection.query(
 						"UPDATE products SET ? WHERE ?", [{
@@ -76,9 +76,11 @@ function checkQuantity(){
 					}],
 					function(err, res){
 						
-						console.log(res.affectedRows + "quantities updated!\n");
+						console.log("Your total is $" + product.price * inputQuantity);
 					}
 					)
+
+					
 					
 
 				}else{
